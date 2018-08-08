@@ -32,13 +32,18 @@ public class Song {
 
     @Setter
     private boolean favorite;
+    private final String favoriteIcon = "★";
 
     public String getTitleString() {
         if (App.getPreferenceUtil().shouldPreferRomaji() && !TextUtils.isEmpty(titleRomaji)) {
-            return titleRomaji;
+            if(this.favorite){return favoriteIcon + " " + titleRomaji;}else{return titleRomaji;}
         }
 
-        return title;
+        if(this.favorite){
+            return favoriteIcon + " " + title;
+        }else{
+            return title;
+        }
     }
 
     public String getAlbumsString() {
