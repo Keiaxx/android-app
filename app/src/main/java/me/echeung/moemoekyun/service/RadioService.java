@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
 import android.os.Binder;
@@ -363,6 +364,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                         case KeyEvent.KEYCODE_MEDIA_NEXT:
                         case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                             // Do nothing
+                            favoriteCurrentSong();
                             break;
                     }
                     break;
@@ -584,6 +586,11 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
                 sendBroadcast(favIntent);
+
+                if(!isCurrentlyFavorite){
+                    ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+                    toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,150);
+                }
 
                 updateNotification();
                 updateMediaSessionPlaybackState();
